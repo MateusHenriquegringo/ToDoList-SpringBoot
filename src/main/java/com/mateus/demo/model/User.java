@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 import org.hibernate.annotations.Cascade;
 
 import java.lang.annotation.Target;
@@ -12,6 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
 @Entity
 @Table(name="user_table")
 public class User {
@@ -38,34 +44,6 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Task> userTasks =  new ArrayList<Task>();
 
-	public User() {
-	}
-
-	public User(long id, String username, String password) {
-		this.id = id;
-		this.username = username;
-		this.password = password;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 	@JsonIgnore
 	public List<Task> getUserTasks() {
@@ -73,15 +51,4 @@ public class User {
 	}
 
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof User user)) return false;
-		return getId() == user.getId() && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getUserTasks(), user.getUserTasks());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(getId(), getUsername(), getPassword(), getUserTasks());
-	}
 }
