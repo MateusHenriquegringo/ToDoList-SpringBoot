@@ -6,12 +6,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -45,7 +42,7 @@ public class User {
 	private List<Task> userTasks =  new ArrayList<Task>();
 
 
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	public List<Task> getUserTasks() {
 		return userTasks;
 	}
