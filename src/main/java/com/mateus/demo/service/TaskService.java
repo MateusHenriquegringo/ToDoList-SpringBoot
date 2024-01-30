@@ -4,6 +4,8 @@ import com.mateus.demo.model.Task;
 import com.mateus.demo.model.User;
 import com.mateus.demo.repository.TaskRepository;
 import com.mateus.demo.repository.UserRepository;
+import com.mateus.demo.service.exceptions.DataBindingViolationException;
+import com.mateus.demo.service.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
@@ -24,13 +26,13 @@ public class TaskService {
 
 	public Task findById(Long id) {
 		Optional<Task> task = taskRepository.findById(id);
-		return task.orElseThrow(() -> new RuntimeException("task dont finded"));
+		return task.orElseThrow(() -> new ObjectNotFoundException("task dont finded"));
 	}
 
 
 	public List<Task> findAllTaskByUser (Long userId){
 		Optional<List<Task>> allTasks = this.taskRepository.findByUser_Id(userId);
-		return allTasks.orElseThrow(()-> new RuntimeException("no tasks found"));
+		return allTasks.orElseThrow(()-> new ObjectNotFoundException("no tasks found"));
 	}
 
 	@Transactional
@@ -51,7 +53,7 @@ public class TaskService {
 		try {
 			this.taskRepository.deleteById(id);
 		} catch (Exception e){
-			throw new RuntimeException("delete isn't possible, there are tasks in the user");
+			throw new DataBindingViolationException("delete isn't possible, there are tasks in the user");
 		}
 	}
 }

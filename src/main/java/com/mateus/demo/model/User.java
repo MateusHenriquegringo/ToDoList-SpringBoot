@@ -38,7 +38,7 @@ public class User {
 	@Column(name = "password", nullable = false)
 	private String password;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "user")
 	private List<Task> userTasks =  new ArrayList<Task>();
 
 

@@ -29,14 +29,10 @@ public class UserController {
 	@PostMapping()
 	@Validated(User.CreateUser.class)
 	public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
-		try {
 			this.userService.createUser(user);
 			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
 
 			return ResponseEntity.created(uri).build();
-		} catch (DataIntegrityViolationException e) {
-			return ResponseEntity.unprocessableEntity().body("user already exists");
-		}
 	}
 
 	@PutMapping("/{id}")
