@@ -1,7 +1,6 @@
 package com.mateus.demo.controller;
 
 import com.mateus.demo.model.Task;
-import com.mateus.demo.model.User;
 import com.mateus.demo.service.TaskService;
 import com.mateus.demo.service.UserService;
 import jakarta.validation.Valid;
@@ -47,13 +46,13 @@ public class TaskController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteTask(@PathVariable Long id){
+	public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
 		this.taskService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping("/user/{id}")
-	public ResponseEntity<List<Task>> findAllTasks(@PathVariable Long id){
+	public ResponseEntity<List<Task>> findAllTasks(@PathVariable Long id) {
 		userService.findById(id);
 		List<Task> tasks = this.taskService.findAllTaskByUser(id);
 		return ResponseEntity.ok().body(tasks);

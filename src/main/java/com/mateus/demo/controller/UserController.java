@@ -4,7 +4,6 @@ import com.mateus.demo.model.User;
 import com.mateus.demo.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +28,10 @@ public class UserController {
 	@PostMapping()
 	@Validated(User.CreateUser.class)
 	public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
-			this.userService.createUser(user);
-			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+		this.userService.createUser(user);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
 
-			return ResponseEntity.created(uri).build();
+		return ResponseEntity.created(uri).build();
 	}
 
 	@PutMapping("/{id}")

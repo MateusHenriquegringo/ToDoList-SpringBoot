@@ -1,7 +1,6 @@
 package com.mateus.demo.repository;
 
 import com.mateus.demo.model.Task;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

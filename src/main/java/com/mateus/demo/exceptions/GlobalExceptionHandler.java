@@ -1,6 +1,5 @@
 package com.mateus.demo.exceptions;
 
-import com.fasterxml.jackson.databind.util.ExceptionUtil;
 import com.mateus.demo.service.exceptions.DataBindingViolationException;
 import com.mateus.demo.service.exceptions.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-	protected ResponseEntity<Object> handleMethodArgumentNotValid (
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(
 			MethodArgumentNotValidException methodArgumentNotValidException,
 			HttpHeaders httpHeaders,
 			HttpStatus httpStatus,
@@ -35,25 +34,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		ErrorResponse errorResponse = new ErrorResponse(
 				HttpStatus.UNPROCESSABLE_ENTITY.value(),
 				"Validation error. Check errors field"
-				);
-				for (FieldError fieldError: methodArgumentNotValidException.getBindingResult().getFieldErrors()){
-					errorResponse.addValidationError(fieldError.getField(), fieldError.getDefaultMessage());
-				}
-				return ResponseEntity.unprocessableEntity().body(errorResponse);
+		);
+		for (FieldError fieldError : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
+			errorResponse.addValidationError(fieldError.getField(), fieldError.getDefaultMessage());
+		}
+		return ResponseEntity.unprocessableEntity().body(errorResponse);
 
 	}
 
 
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public ResponseEntity<Object> handleAllUncaughtException(Exception exception, WebRequest webRequest){
+	public ResponseEntity<Object> handleAllUncaughtException(Exception exception, WebRequest webRequest) {
 		log.error("unknow error occurred", exception);
-		return buildErrorResponse (exception, "unknow error occurred", HttpStatus.INTERNAL_SERVER_ERROR, webRequest);
+		return buildErrorResponse(exception, "unknow error occurred", HttpStatus.INTERNAL_SERVER_ERROR, webRequest);
 	}
 
-	private ResponseEntity<Object> buildErrorResponse(Exception exception, String message, HttpStatus status, WebRequest request){
-		ErrorResponse errorResponse = new ErrorResponse(status.value(),message);
-		if (this.printStackTrace){
+	private ResponseEntity<Object> buildErrorResponse(Exception exception, String message, HttpStatus status, WebRequest request) {
+		ErrorResponse errorResponse = new ErrorResponse(status.value(), message);
+		if (this.printStackTrace) {
 			errorResponse.setStackTrace(ExceptionUtils.getStackTrace(exception));
 		}
 		return ResponseEntity.status(status).body(errorResponse);
@@ -62,12 +61,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	@ResponseStatus(HttpStatus.CONFLICT)
-	public  ResponseEntity<Object> handleDataIntegrityViolationException(
+	public ResponseEntity<Object> handleDataIntegrityViolationException(
 			DataIntegrityViolationException dataIntegrityViolationException,
 			WebRequest webRequest
 	) {
 		String errorMessage = dataIntegrityViolationException.getMostSpecificCause().getMessage();
-		log.error("failed to save entity: "+ errorMessage, dataIntegrityViolationException);
+		log.error("failed to save entity: " + errorMessage, dataIntegrityViolationException);
 		return buildErrorResponse(
 				dataIntegrityViolationException,
 				errorMessage,
@@ -81,9 +80,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleObjectNotFoundException(
 			ObjectNotFoundException objectNotFoundException,
 			WebRequest webRequest
-	){
+	) {
 		String errorMessage = objectNotFoundException.getMessage();
-		log.error("class not found: "+ errorMessage+objectNotFoundException);
+		log.error("class not found: " + errorMessage + objectNotFoundException);
 
 		return buildErrorResponse(
 				objectNotFoundException,
@@ -98,9 +97,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleDataBindingViolationException(
 			DataBindingViolationException dataBindingViolationException,
 			WebRequest webRequest
-	){
+	) {
 		String errorMessage = dataBindingViolationException.getMessage();
-		log.error("Failed to save entity with associated data"+ errorMessage+dataBindingViolationException);
+		log.error("Failed to save entity with associated data" + errorMessage + dataBindingViolationException);
 
 		return buildErrorResponse(
 				dataBindingViolationException,

@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -21,7 +20,7 @@ public class Task {
 	@Column(name = "id", unique = true)
 	private Long id;
 
-	@JsonProperty(access= JsonProperty.Access.WRITE_ONLY)
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false, updatable = false)
 	private User user;

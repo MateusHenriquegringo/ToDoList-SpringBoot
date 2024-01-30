@@ -1,13 +1,11 @@
 package com.mateus.demo.service;
 
 import com.mateus.demo.model.Task;
-import com.mateus.demo.model.User;
 import com.mateus.demo.repository.TaskRepository;
 import com.mateus.demo.repository.UserRepository;
 import com.mateus.demo.service.exceptions.DataBindingViolationException;
 import com.mateus.demo.service.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +28,9 @@ public class TaskService {
 	}
 
 
-	public List<Task> findAllTaskByUser (Long userId){
+	public List<Task> findAllTaskByUser(Long userId) {
 		Optional<List<Task>> allTasks = this.taskRepository.findByUser_Id(userId);
-		return allTasks.orElseThrow(()-> new ObjectNotFoundException("no tasks found"));
+		return allTasks.orElseThrow(() -> new ObjectNotFoundException("no tasks found"));
 	}
 
 	@Transactional
@@ -49,10 +47,10 @@ public class TaskService {
 		return this.taskRepository.save(newObj);
 	}
 
-	public void delete(Long id){
+	public void delete(Long id) {
 		try {
 			this.taskRepository.deleteById(id);
-		} catch (Exception e){
+		} catch (Exception e) {
 			throw new DataBindingViolationException("delete isn't possible, there are tasks in the user");
 		}
 	}
