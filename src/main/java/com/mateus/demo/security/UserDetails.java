@@ -6,23 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor
-@Getter
-public class UserSecurity implements UserDetails {
 
+@Getter
+public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
 	private Long id;
 	private String username;
 	private String password;
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserSecurity(Long id, String username, String password, Set<ProfileEnum> profileEnum) {
+	public UserDetails(Long id, String username, String password, Set<ProfileEnum> profileEnum) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
