@@ -31,4 +31,10 @@ public class ErrorResponse {
 		private final String field;
 		private final String message;
 	}
+
+	public String toJson(){
+		return "{\"status\": \"" + getStatus() + "\", " +
+				"\"message\": \"" + getMessage() + "\"}";
+	}
+
 }

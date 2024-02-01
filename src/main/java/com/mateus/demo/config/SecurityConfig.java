@@ -1,6 +1,7 @@
 package com.mateus.demo.config;
 
 
+import com.mateus.demo.security.JWTAuthenticationFilter;
 import com.mateus.demo.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -38,9 +39,10 @@ public class SecurityConfig {
 	@Autowired
 	private JWTUtil jwtUtil;
 
-	private AuthenticationManager authenticationManager;
 	@Autowired
 	private UserDetailsService userDetailsService;
+
+	private AuthenticationManager authenticationManager;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -56,10 +58,13 @@ public class SecurityConfig {
 					authorize
 							.requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
 							.requestMatchers(PUBLIC_MATCHERS).permitAll()
-							.anyRequest().authenticated();
+							.anyRequest().authenticated()
+							.and().authenticationManager(authenticationManager);
 				})
 				.sessionManagement(s ->
 						s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+		http.addFilter(new JWTAuthenticationFilter(this.authenticationManager, this.jwtUtil));
 
 		return http.build();
 	}
